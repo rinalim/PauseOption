@@ -1,0 +1,2 @@
+# PauseOption
+Show control information
