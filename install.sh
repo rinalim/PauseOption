@@ -7,8 +7,6 @@
 # chmod 755 install.sh
 # sudo ./install.sh
 
-sudo cp ./libraspidmx.so.1 /usr/lib
-
 rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
 cp -f -r ./PauseOption /opt/retropie/configs/all/
