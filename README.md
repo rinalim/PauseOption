@@ -1,2 +1,2 @@
 # PauseOption
-Show control information
+Show control information for RetroPie
