@@ -13,8 +13,17 @@ rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
 cp -f -r ./PauseOption /opt/retropie/configs/all/
 
-sudo sed -i '/PauseOption.py/d' /opt/retropie/configs/all/autostart.sh
-sudo sed -i '1i\\/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' /opt/retropie/configs/all/autostart.sh
+sudo sed -i '/rom_name/d' /opt/retropie/configs/all/runcommand-onstart.sh 
+sudo sed -i '/PauseOption/d' /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'rom_name=$3' >> /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'rom_name="${rom_name##*/}"' >> /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'rom_name="${rom_name%.*}"' >> /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'echo "$1 $rom_name" > /tmp/PauseOption.log' >> /opt/retropie/configs/all/runcommand-onstart.sh
+#echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >> /opt/retropie/configs/all/runcommand-onstart.sh
+
+cd /home/pi/PauseOption/PauseOption/PauseMode
+sudo chmod 755 update.sh
+./update.sh
 
 echo
 echo "Setup Completed. Reboot after 3 Seconds."
