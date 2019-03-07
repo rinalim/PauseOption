@@ -38,7 +38,7 @@
 int main (int argc, char **argv)
 {
 	int fd, i;
-	unsigned char axes = 2;
+	unsigned char axes = 8;
 	unsigned char buttons = 2;
 	int version = 0x000800;
 	char name[NAME_LENGTH] = "Unknown";
@@ -103,7 +103,7 @@ int main (int argc, char **argv)
 				break;
 			}
 
-			if( axis[1] > 0)
+			if( axis[1] > 0 || axis[3] > 0 || axis[5] > 0 || axis[7] > 0 )
 			{
 				if( PAUSE_MODE_ON == 1 )
 				{
@@ -115,7 +115,7 @@ int main (int argc, char **argv)
 					// system("/opt/retropie/configs/all/pngpause -b0 -l30000 /opt/retropie/configs/all/pause_stop.png &");
 				}					
 			}
-			if( axis[1] < 0)
+			if( axis[1] < 0 || axis[3] < 0 || axis[5] < 0 || axis[7] < 0 )
 			{
 				if( PAUSE_MODE_ON == 1 )
 				{
