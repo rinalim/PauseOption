@@ -24,6 +24,9 @@ echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >>
 #sudo chmod 755 update.sh
 #./update.sh
 
+mkdir backup
+cp /opt/retropie/configs/all/PauseMode/*png ./backup
+
 chgrp -R -v pi /opt/retropie/configs/all/PauseOption/result/
 chown -R -v pi /opt/retropie/configs/all/PauseOption/result/
 
