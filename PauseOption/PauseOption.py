@@ -124,7 +124,7 @@ def get_btn_layout(system, romname, buttons):
     # print dev_name
     f.close()
     '''
-    # FBA button sequence = [0, 8, 1, 9, 10, 11]   
+    # FBA button sequence   
     btn_map['a'] = '"8"'
     btn_map['b'] = '"0"'
     btn_map['x'] = '"9"'
