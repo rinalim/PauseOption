@@ -24,5 +24,8 @@ echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >>
 #sudo chmod 755 update.sh
 #./update.sh
 
+chgrp -R -v pi /opt/retropie/configs/all
+chown -R -v pi /opt/retropie/configs/all
+
 echo
 echo "Setup Completed"
