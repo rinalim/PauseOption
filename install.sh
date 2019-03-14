@@ -30,5 +30,7 @@ cp /opt/retropie/configs/all/PauseMode/*png ./backup
 chgrp -R -v pi /opt/retropie/configs/all/PauseOption/result/
 chown -R -v pi /opt/retropie/configs/all/PauseOption/result/
 
+python ./PauseOption/setup.py
+
 echo
 echo "Setup Completed"
