@@ -19,9 +19,9 @@ echo 'rom_name="${rom_name%.*}"' >> /opt/retropie/configs/all/runcommand-onstart
 echo 'echo "$1 $rom_name" > /tmp/PauseOption.log' >> /opt/retropie/configs/all/runcommand-onstart.sh
 echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >> /opt/retropie/configs/all/runcommand-onstart.sh
 
-cd /home/pi/PauseOption/PauseOption/PauseMode
-sudo chmod 755 update.sh
-./update.sh
+#cd /home/pi/PauseOption/PauseOption/PauseMode
+#sudo chmod 755 update.sh
+#./update.sh
 
 echo
 echo "Setup Completed"
