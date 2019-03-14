@@ -10,7 +10,7 @@
 rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
 cp -f -r ./PauseOption /opt/retropie/configs/all/
-mkdir /opt/retropie/configs/all/PauseOption/result
+mkdir /opt/retropie/configs/all/PauseOption/result/
 
 sudo sed -i '/rom_name/d' /opt/retropie/configs/all/runcommand-onstart.sh 
 sudo sed -i '/PauseOption/d' /opt/retropie/configs/all/runcommand-onstart.sh 
@@ -24,8 +24,8 @@ echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >>
 #sudo chmod 755 update.sh
 #./update.sh
 
-chgrp -R -v pi /opt/retropie/configs/all/PauseOption/
-chown -R -v pi /opt/retropie/configs/all/PauseOption/
+chgrp -R -v pi /opt/retropie/configs/all/PauseOption/result/
+chown -R -v pi /opt/retropie/configs/all/PauseOption/result/
 
 echo
 echo "Setup Completed"
