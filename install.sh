@@ -26,8 +26,8 @@ echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >>
 mkdir backup
 cp /opt/retropie/configs/all/PauseMode/*png ./backup
 
-chgrp -R -v pi /opt/retropie/configs/all/PauseOption/result/
-chown -R -v pi /opt/retropie/configs/all/PauseOption/result/
+chgrp -R -v pi /opt/retropie/configs/all/PauseOption/
+chown -R -v pi /opt/retropie/configs/all/PauseOption/
 
 python ./PauseOption/setup.py
 
