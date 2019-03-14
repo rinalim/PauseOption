@@ -2,6 +2,7 @@
 
 PATH_PAUSEOPTION = '/opt/retropie/configs/all/PauseOption/'
 
+print '\n'
 print ' -(1)-----  -(2)-----  -(3)----- '
 print ' | X Y L |  | Y X L |  | L Y X | '
 print ' | A B R |  | B A R |  | R B A | '
