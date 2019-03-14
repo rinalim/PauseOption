@@ -116,14 +116,14 @@ def get_info(romname):
 
 
 def get_btn_layout(system, romname, buttons):
-
+   '''
     f = open('/tmp/js.log', 'r')
     line = f.readline()
     line = f.readline() # goto 2nd line
     dev_name = re.search('Joystick \((.*?)\)', line).group(1)
     # print dev_name
     f.close()
-
+    '''
     # FBA button sequence = [0, 8, 1, 9, 10, 11]   
     btn_map['a'] = '"0"'
     btn_map['b'] = '"8"'
