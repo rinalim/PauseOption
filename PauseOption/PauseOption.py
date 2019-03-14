@@ -1,20 +1,59 @@
-import os, re
+#!/usr/bin/python
+
+import os, re, time
 import xml.etree.ElementTree as ET
 
-#CONFIG = '/opt/retropie/configs/'
-CONFIG = '/home/csle/PauseOptionDev/configs/'
+CONFIG = '/opt/retropie/configs/'
+#CONFIG = '/home/csle/PauseOptionDev/configs/'
+PATH_PAUSEOPTION = '/opt/retropie/configs/all/PauseOption/'
+#PATH_PAUSEOPTION = '/home/csle/PauseOptionDev/'
+PATH_PAUSEMODE = '/opt/retropie/configs/all/PauseMode/'
+#PATH_PAUSEMODE = '/home/csle/PauseOptionDev/PauseMode/'
 
 user_key = {}
 btn_map = {}
 es_conf = 1
 
+capcom_fight = ['mshvsf', 'vsav', 'sfa', 'sfa2', 'sfa3', 'sf2', 'sf2ce', 'ssf2']
+capcom_dd = ['ddtod', 'ddsom']
+
+
+def check_update(romname):
+    RESUME = PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
+    CORECFG = CONFIG + 'fba/FB Alpha/FB Alpha.rmp'
+    GAMECFG = CONFIG + 'fba/FB Alpha/' + romname + '.rmp'
+   
+    if os.path.isfile(RESUME) == False:
+        return True
+    else:
+        _time = os.path.getmtime(RESUME)
+        if _time < os.path.getmtime(PATH_PAUSEOPTION+'layout.cfg'):
+            return True
+        if _time < os.path.getmtime(PATH_PAUSEOPTION+'xml/'+romname+'.xml'):
+            return True
+        if os.path.isfile(CORECFG) == True:
+            if _time < os.path.getmtime(CORECFG):
+                return True
+        if os.path.isfile(GAMECFG) == True:
+            if _time < os.path.getmtime(GAMECFG):
+                return True
+        
+    print 'No need to update PNG'
+    return False
+
+
 def load_layout():
 
-    #print ' -(1)-----  -(2)-----  -(3)----- '
-    #print ' | X Y L |  | Y X L |  | L Y X | '
-    #print ' | A B R |  | B A R |  | R B A | '
-    #print ' ---------  ---------  --------- '
+    global es_conf
 
+    #' -(1)-----  -(2)-----  -(3)----- '
+    #' | X Y L |  | Y X L |  | L Y X | '
+    #' | A B R |  | B A R |  | R B A | '
+    #' ---------  ---------  --------- '
+
+    f = open(PATH_PAUSEOPTION+"layout.cfg", 'r')
+    es_conf = int(f.readline())
+    
     if es_conf == 1:
         user_key['1'] = 'x'
         user_key['2'] = 'y'
@@ -41,13 +80,13 @@ def load_layout():
 def get_info(romname):
 
     #INPUT = './controls.xml'   
-    if os.path.isfile('./xml/'+romname+'.xml') == False:
-        print 'No Game Found'
+    if os.path.isfile(PATH_PAUSEOPTION+'xml/'+romname+'.xml') == False:
+        print 'No xml found'
         name = romname
         lever = '0'
-        buttons = ['Button A', 'Button B', 'Button C', 'Button D']
+        buttons = ['Button A', 'Button B', 'Button C', 'Button D', 'None', 'None']
     else:
-        doc = ET.parse('./xml/'+romname+'.xml')
+        doc = ET.parse(PATH_PAUSEOPTION+'xml/'+romname+'.xml')
         game = doc.getroot()
     #game = root.find('./game[@romname=\"' + romname + '\"]')
     #if game == None:
@@ -62,13 +101,21 @@ def get_info(romname):
         buttons = []
         for i in labels[0]:
             if 'BUTTON' in i.get('name'):
-                buttons.append(i.get('value'))
-                print i.get('name'), i.get('value')
+                btn = i.get('value')
+                btn = btn.replace("Light", "L")
+                btn = btn.replace("Middle", "M")
+                btn = btn.replace("Heavy", "H")
+                btn = btn.replace(" - ", "-")
+                btn = btn[:10]
+                buttons.append(btn)
+                print i.get('name'), btn
+        for j in range(len(buttons), 6):
+            buttons.append("None")
     
     return name, lever, buttons
 
 
-def get_btn_layout(emul, romname, buttons):
+def get_btn_layout(system, romname, buttons):
 
     f = open('/tmp/js.log', 'r')
     line = f.readline()
@@ -77,27 +124,6 @@ def get_btn_layout(emul, romname, buttons):
     # print dev_name
     f.close()
 
-    print 'Load global setting'
-    '''
-    f = open(CONFIG + 'all/retroarch/autoconfig/' + dev_name + '.cfg', 'r')
-    #f = open("/home/csle/PauseOptionDev/configs/fba/FB Alpha/mslug.rmp", 'r')
-    while True:
-        line = f.readline()
-        if not line: 
-            break
-        if 'btn' not in line:
-            continue
-        line = line.replace('\n','')
-        line = line.replace('input_','')
-        line = line.replace('_btn','')
-        line = line.replace('=','')
-        words = line.split()
-        print words
-        if len(words[0]) == 1:    # input_a_btn = "0"
-            btn_map[words[0]] = words[1]   
-    f.close()
-    '''
-    
     # FBA button sequence = [0, 8, 1, 9, 10, 11]   
     btn_map['a'] = '"0"'
     btn_map['b'] = '"8"'
@@ -143,85 +169,105 @@ def get_btn_layout(emul, romname, buttons):
         f.close()
 
     print btn_map
-    # Convert from the FBA sequence to the normal sequence
+    # Convert from the FBA sequence to the normal sequence (0~5)
     convert = {}
-    convert['"0"'] = 0
-    convert['"8"'] = 1
-    convert['"1"'] = 2
-    convert['"9"'] = 3
-    convert['"10"'] = 4
-    convert['"11"'] = 5
-    btn_map['a'] = convert[btn_map['a']]
-    btn_map['b'] = convert[btn_map['b']]
-    btn_map['x'] = convert[btn_map['x']]
-    btn_map['y'] = convert[btn_map['y']]
-    btn_map['l'] = convert[btn_map['l']]
-    btn_map['r'] = convert[btn_map['r']]   
+
+    if romname in capcom_fight:
+        convert['"0"'] = 3
+        convert['"8"'] = 4
+        convert['"1"'] = 5
+        convert['"9"'] = 0
+        convert['"10"'] = 1
+        convert['"11"'] = 2
+    elif romname in capcom_dd:
+        convert['"0"'] = 0
+        convert['"8"'] = 1
+        convert['"1"'] = 3
+        convert['"9"'] = 2
+        convert['"10"'] = 4
+        convert['"11"'] = 5
+    else:
+        convert['"0"'] = 0
+        convert['"8"'] = 1
+        convert['"1"'] = 3
+        convert['"9"'] = 2
+        convert['"10"'] = 4
+        convert['"11"'] = 5 
+
+    # Map the button sequnece and the button description   
+    btn_map['a'] = buttons[convert[btn_map['a']]]
+    btn_map['b'] = buttons[convert[btn_map['b']]]
+    btn_map['x'] = buttons[convert[btn_map['x']]]
+    btn_map['y'] = buttons[convert[btn_map['y']]]
+    btn_map['l'] = buttons[convert[btn_map['l']]]
+    btn_map['r'] = buttons[convert[btn_map['r']]]  
     print btn_map
 
-    # Do capcom patch here
     
-def draw_picture(romname, name, lever, buttons):
+def draw_picture(system, romname, name, lever, buttons):
 
-    RESUME = " ./result/" + romname + "_resume.png"
-
-    if os.path.isfile(RESUME[1:]) == True:
-        print 'File aleady exists'
-        return
+    RESUME = " " + PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
+    STOP = " " + PATH_PAUSEOPTION+'result/' + romname + '_stop.png'
 
     # Title
-    cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 22 -size 360x50 -gravity Center caption:'" + name + "' /tmp/text.png"
+    cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 -size 360x50 -gravity Center caption:'" + name + "' /tmp/text.png"
     os.system(cmd)
-    cmd = "composite -geometry 360x50+20+10 /tmp/text.png ./img/bg_resume.png" + RESUME
+    cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
     os.system(cmd)
 
     # Layout
-    cmd = "composite -geometry 180x130+22+80 ./img/layout1.png" + RESUME + RESUME
+    cmd = "composite -geometry 180x130+22+80 " + PATH_PAUSEOPTION + "img/layout" + str(es_conf) + ".png" + RESUME + RESUME
     os.system(cmd)
 
     # Button box
-    cmd = "composite -geometry 180x130+212+80 ./img/buttons.png" + RESUME + RESUME
+    cmd = "composite -geometry 180x130+212+80 " + PATH_PAUSEOPTION + "img/buttons.png" + RESUME + RESUME
     os.system(cmd)
 
     # Buttons
-    pos = ["80x18+218+120", "80x18+298+120", "80x18+218+150", "80x18+298+150", "80x18+218+180", "80x18+298+180"]
+    pos = ["80x17+218+120", "80x17+298+120", "80x17+218+150", "80x17+298+150", "80x17+218+180", "80x17+298+180"]
     digits = [u'\u2460', u'\u2461', u'\u2462', u'\u2463', u'\u2464', u'\u2465']
     i = 0
     for btn in buttons:
-        btn1 = btn.replace("Light", "L")
-        btn1 = btn1.replace("Middle", "M")
-        btn1 = btn1.replace("Heavy", "H")
-        btn1 = digits[i].encode('utf-8') + ' ' + btn1
-        cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 label:'" + btn1 + "' /tmp/text.png"
+        if btn == 'None':
+            continue
+        btn = digits[i].encode('utf-8') + ' ' + btn
+        cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 label:'" + btn + "' /tmp/text.png"
         os.system(cmd)
         cmd = "composite -geometry " + pos[i] + " /tmp/text.png" + RESUME + RESUME
         os.system(cmd)
         i = i+1
 
     # Joystick Box
-    cmd = "composite -geometry 360x120+22+248 ./img/joystic.png" + RESUME + RESUME
+    cmd = "composite -geometry 358x120+23+248 " + PATH_PAUSEOPTION + "img/joystic.png" + RESUME + RESUME
     os.system(cmd)
 
     # Lever
     if lever[0] != 'J': # Not 'Just Bottons'
-        cmd = "composite -geometry 70x70+36+260 ./img/" + lever[0] + "way.png" + RESUME + RESUME
+        cmd = "composite -geometry 70x70+36+260 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + RESUME + RESUME
         os.system(cmd)
 
-    get_btn_layout('fba', romname, buttons)
+    if system == "lr-fbalpha":
+        get_btn_layout(system, romname, buttons)
     
-    # Configured button layout
-    pos = ["80x18+124+270", "80x18+207+270", "80x18+290+270", "80x18+124+300", "80x18+207+300", "80x18+290+300"]
-    i = 0
-    for btn in buttons:
-        btn2 = btn.replace("Light", "L")
-        btn2 = btn2.replace("Middle", "M")
-        btn2 = btn2.replace("Heavy", "H")
-        btn2 = u'\u25cf'.encode('utf-8') + ' ' + btn2
-        cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 label:'" + btn2 + "' /tmp/text.png"
-        os.system(cmd)
-        cmd = "composite -geometry " + pos[i] + " /tmp/text.png" + RESUME + RESUME
-        os.system(cmd)
-        i = i+1
+        # Configured button layout
+        pos = ["80x17+124+270", "80x17+207+270", "80x17+290+270", "80x17+124+300", "80x17+207+300", "80x17+290+300"]
+        for i in range(1,7):
+            btn = btn_map[user_key[str(i)]]
+            if btn == 'None':
+                continue
+            btn = u'\u25cf'.encode('utf-8') + ' ' + btn
+            cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 label:'" + btn + "' /tmp/text.png"
+            os.system(cmd)
+            cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
+            os.system(cmd)
+
+    # Generate a STOP image
+    cmd = "composite " + PATH_PAUSEOPTION + "img/bg_stop.png " + RESUME + STOP
+    os.system(cmd)
+
+    # Copy images to PauseMode 
+    os.system("cp " + RESUME + " " + PATH_PAUSEMODE + "pause_resume.png")
+    os.system("cp " + STOP + " " + PATH_PAUSEMODE + "pause_stop.png")
 
 
 def main():
@@ -235,10 +281,14 @@ def main():
         line = f.readline()
         words = line.split()
         f.close()
-        if len(words) >= 2:
-            name, lever, buttons = get_info(words[1])
-            #print name, lever, buttons
-            draw_picture(words[1], name, lever, buttons)
+        if len(words) == 3:    # path, romname
+            system = words[1]
+            romname = words[2]
+            if check_update(romname) == True:
+                load_layout()
+                name, lever, buttons = get_info(romname)
+                #print name, lever, buttons
+                draw_picture(system, romname, name, lever, buttons)
 
 
 if __name__ == "__main__":
