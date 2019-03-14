@@ -176,8 +176,8 @@ def get_btn_layout(system, romname, buttons):
         convert['"8"'] = 4
         convert['"1"'] = 0
         convert['"9"'] = 1
-        convert['"10"'] = 5
-        convert['"11"'] = 2
+        convert['"10"'] = 2
+        convert['"11"'] = 5
     elif romname in capcom_dd:
         convert['"0"'] = 0
         convert['"8"'] = 1
