@@ -24,6 +24,4 @@ sudo chmod 755 update.sh
 ./update.sh
 
 echo
-echo "Setup Completed. Reboot after 3 Seconds."
-sleep 3
-reboot
+echo "Setup Completed"
