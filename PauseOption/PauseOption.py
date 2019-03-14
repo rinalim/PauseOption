@@ -125,12 +125,12 @@ def get_btn_layout(system, romname, buttons):
     f.close()
     '''
     # FBA button sequence = [0, 8, 1, 9, 10, 11]   
-    btn_map['a'] = '"0"'
-    btn_map['b'] = '"8"'
-    btn_map['x'] = '"1"'
-    btn_map['y'] = '"9"'
-    btn_map['l'] = '"10"'
-    btn_map['r'] = '"11"'
+    btn_map['a'] = '"8"'
+    btn_map['b'] = '"0"'
+    btn_map['x'] = '"9"'
+    btn_map['y'] = '"1"'
+    btn_map['l'] = '"11"'
+    btn_map['r'] = '"10"'
 
     if os.path.isfile(CONFIG + 'fba/FB Alpha/FB Alpha.rmp') == True:
         print 'Override with emulator setting'
@@ -189,8 +189,8 @@ def get_btn_layout(system, romname, buttons):
     else:
         convert['"0"'] = 0
         convert['"8"'] = 1
-        convert['"1"'] = 3
-        convert['"9"'] = 2
+        convert['"1"'] = 2
+        convert['"9"'] = 3
         convert['"10"'] = 4
         convert['"11"'] = 5 
 
