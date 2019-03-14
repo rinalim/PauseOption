@@ -4,11 +4,8 @@ import os, re, time
 import xml.etree.ElementTree as ET
 
 CONFIG = '/opt/retropie/configs/'
-#CONFIG = '/home/csle/PauseOptionDev/configs/'
 PATH_PAUSEOPTION = '/opt/retropie/configs/all/PauseOption/'
-#PATH_PAUSEOPTION = '/home/csle/PauseOptionDev/'
 PATH_PAUSEMODE = '/opt/retropie/configs/all/PauseMode/'
-#PATH_PAUSEMODE = '/home/csle/PauseOptionDev/PauseMode/'
 
 user_key = {}
 btn_map = {}
@@ -20,6 +17,7 @@ capcom_dd = ['ddtod', 'ddsom']
 
 def check_update(romname):
     RESUME = PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
+    XML = PATH_PAUSEOPTION+'xml/'+romname+'.xml'
     CORECFG = CONFIG + 'fba/FB Alpha/FB Alpha.rmp'
     GAMECFG = CONFIG + 'fba/FB Alpha/' + romname + '.rmp'
    
@@ -29,8 +27,9 @@ def check_update(romname):
         _time = os.path.getmtime(RESUME)
         if _time < os.path.getmtime(PATH_PAUSEOPTION+'layout.cfg'):
             return True
-        if _time < os.path.getmtime(PATH_PAUSEOPTION+'xml/'+romname+'.xml'):
-            return True
+        if os.path.isfile(XML) == True:
+            if _time < os.path.getmtime(XML):
+                return True
         if os.path.isfile(CORECFG) == True:
             if _time < os.path.getmtime(CORECFG):
                 return True
@@ -38,7 +37,7 @@ def check_update(romname):
             if _time < os.path.getmtime(GAMECFG):
                 return True
         
-    print 'No need to update PNG'
+    #print 'No need to update PNG'
     return False
 
 
@@ -116,7 +115,7 @@ def get_info(romname):
 
 
 def get_btn_layout(system, romname, buttons):
-   '''
+    '''
     f = open('/tmp/js.log', 'r')
     line = f.readline()
     line = f.readline() # goto 2nd line
@@ -125,12 +124,12 @@ def get_btn_layout(system, romname, buttons):
     f.close()
     '''
     # FBA button sequence   
-    btn_map['a'] = '"8"'
     btn_map['b'] = '"0"'
-    btn_map['x'] = '"9"'
+    btn_map['a'] = '"8"'
     btn_map['y'] = '"1"'
-    btn_map['l'] = '"11"'
+    btn_map['x'] = '"9"'
     btn_map['r'] = '"10"'
+    btn_map['l'] = '"11"'
 
     if os.path.isfile(CONFIG + 'fba/FB Alpha/FB Alpha.rmp') == True:
         print 'Override with emulator setting'
@@ -175,9 +174,9 @@ def get_btn_layout(system, romname, buttons):
     if romname in capcom_fight:
         convert['"0"'] = 3
         convert['"8"'] = 4
-        convert['"1"'] = 5
-        convert['"9"'] = 0
-        convert['"10"'] = 1
+        convert['"1"'] = 0
+        convert['"9"'] = 1
+        convert['"10"'] = 5
         convert['"11"'] = 2
     elif romname in capcom_dd:
         convert['"0"'] = 0
@@ -254,8 +253,9 @@ def draw_picture(system, romname, name, lever, buttons):
         for i in range(1,7):
             btn = btn_map[user_key[str(i)]]
             if btn == 'None':
-                continue
-            btn = u'\u25cf'.encode('utf-8') + ' ' + btn
+                btn = u'\u25cf'.encode('utf-8')
+            else:
+                btn = u'\u25cf'.encode('utf-8') + ' ' + btn
             cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 label:'" + btn + "' /tmp/text.png"
             os.system(cmd)
             cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
@@ -264,10 +264,6 @@ def draw_picture(system, romname, name, lever, buttons):
     # Generate a STOP image
     cmd = "composite " + PATH_PAUSEOPTION + "img/bg_stop.png " + RESUME + STOP
     os.system(cmd)
-
-    # Copy images to PauseMode 
-    os.system("cp " + RESUME + " " + PATH_PAUSEMODE + "pause_resume.png")
-    os.system("cp " + STOP + " " + PATH_PAUSEMODE + "pause_stop.png")
 
 
 def main():
@@ -289,6 +285,13 @@ def main():
                 name, lever, buttons = get_info(romname)
                 #print name, lever, buttons
                 draw_picture(system, romname, name, lever, buttons)
+
+            RESUME = " " + PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
+            STOP = " " + PATH_PAUSEOPTION+'result/' + romname + '_stop.png'
+            # Copy images to PauseMode 
+            os.system("cp " + RESUME + " " + PATH_PAUSEMODE + "pause_resume.png")
+            os.system("cp " + STOP + " " + PATH_PAUSEMODE + "pause_stop.png")
+
 
 
 if __name__ == "__main__":
