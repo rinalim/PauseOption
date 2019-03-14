@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
-#PATH_PAUSEOPTION = '/opt/retropie/configs/all/VolumeJoy/'
-PATH_PAUSEOPTION = '/home/csle/PauseOptionDev/'
+PATH_PAUSEOPTION = '/opt/retropie/configs/all/PauseOption/'
 
 print ' -(1)-----  -(2)-----  -(3)----- '
 print ' | X Y L |  | Y X L |  | L Y X | '
