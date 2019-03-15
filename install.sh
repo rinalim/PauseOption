@@ -6,6 +6,8 @@
 # chmod 755 install.sh
 # sudo ./install.sh
 
+sudo apt-get install fonts-nanum -y
+
 rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
 cp -f -r ./PauseOption /opt/retropie/configs/all/
@@ -22,9 +24,6 @@ echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >>
 #cd /home/pi/PauseOption/PauseOption/PauseMode
 #sudo chmod 755 update.sh
 #./update.sh
-
-mkdir backup
-cp /opt/retropie/configs/all/PauseMode/*png ./backup
 
 chgrp -R -v pi /opt/retropie/configs/all/PauseOption/
 chown -R -v pi /opt/retropie/configs/all/PauseOption/
