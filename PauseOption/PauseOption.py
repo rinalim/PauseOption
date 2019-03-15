@@ -214,6 +214,7 @@ def draw_picture(system, romname, name, lever, buttons):
     STOP = " " + PATH_PAUSEOPTION+'result/' + romname + '_stop.png'
 
     # Title
+    name=name.replace("'","")
     cmd = "convert -background '#E8E8E8' -fill black -font FreeSans -pointsize 20 -size 360x50 -gravity Center caption:'" + name + "' /tmp/text.png"
     os.system(cmd)
     cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
