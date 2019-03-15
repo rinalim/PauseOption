@@ -100,10 +100,15 @@ def get_info(romname):
         buttons = []
         for i in labels[0]:
             if 'BUTTON' in i.get('name'):
-                btn = i.get('value')
+                btn = i.get('value'
                 btn = btn.replace("Light", "L")
+                btn = btn.replace("Jab", "L")
+                btn = btn.replace("Short", "L")
                 btn = btn.replace("Middle", "M")
+                btn = btn.replace("Strong", "M")
                 btn = btn.replace("Heavy", "H")
+                btn = btn.replace("Fierce", "H")
+                btn = btn.replace("Roundhouse", "H")
                 btn = btn.replace(" - ", "-")
                 btn = btn[:10]
                 buttons.append(btn)
