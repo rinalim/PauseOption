@@ -6,7 +6,8 @@
 # chmod 755 install.sh
 # sudo ./install.sh
 
-sudo apt-get install fonts-nanum -y
+#sudo apt-get install fonts-nanum -y
+#sudo apt-get install fonts-nanum-extra -y
 
 rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
