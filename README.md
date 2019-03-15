@@ -6,6 +6,6 @@ Show control information for RetroPie
 cd /home/pi
 git clone https://github.com/rinalim/PauseOption
 cd PauseOption
-sudo chmod 755 ./install.sh
+chmod 755 ./*.sh
 sudo ./install.sh
 </code></pre>
