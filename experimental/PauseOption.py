@@ -121,7 +121,7 @@ def get_info(romname):
                 btn = btn.replace("Magic", "마법")
                 btn = btn.replace("Fire", "총알")
                 btn = btn.replace("Loop", "회전")
-                btn = btn.replace("Bubble", "방울쏘기")
+                btn = btn.replace("Bubble", "방울")
                 btn = btn.replace("Left", "왼쪽")
                 btn = btn.replace("Center", "가운데")
                 btn = btn.replace("Right", "오른쪽")
