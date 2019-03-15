@@ -9,7 +9,7 @@
 #sudo apt-get install fonts-nanum -y
 #sudo apt-get install fonts-nanum-extra -y
 
-rm -rf /opt/retropie/configs/all/PauseOption/
+sudo rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
 cp -f -r ./PauseOption /opt/retropie/configs/all/
 mkdir /opt/retropie/configs/all/PauseOption/result/
