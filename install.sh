@@ -13,6 +13,7 @@ sudo rm -rf /opt/retropie/configs/all/PauseOption/
 mkdir /opt/retropie/configs/all/PauseOption/
 cp -f -r ./PauseOption /opt/retropie/configs/all/
 mkdir /opt/retropie/configs/all/PauseOption/result/
+# cp ./experimental/PauseOption.py /opt/retropie/configs/all/PauseOption/
 
 sudo sed -i '/rom_name/d' /opt/retropie/configs/all/runcommand-onstart.sh 
 sudo sed -i '/PauseOption/d' /opt/retropie/configs/all/runcommand-onstart.sh 
