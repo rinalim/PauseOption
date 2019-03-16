@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<game romname="mslug" gamename="메탈슬러그" numPlayers="2">
+<game romname="mslug" gamename="메탈 슬러그" numPlayers="2">
 	<miscDetails>
 	</miscDetails>
 	<player number="1" numButtons="3">
