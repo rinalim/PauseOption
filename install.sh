@@ -15,12 +15,11 @@ cp -f -r ./PauseOption /opt/retropie/configs/all/
 mkdir /opt/retropie/configs/all/PauseOption/result/
 # cp ./experimental/PauseOption.py /opt/retropie/configs/all/PauseOption/
 
-sudo sed -i '/rom_name/d' /opt/retropie/configs/all/runcommand-onstart.sh 
 sudo sed -i '/PauseOption/d' /opt/retropie/configs/all/runcommand-onstart.sh 
-echo 'rom_name=$3' >> /opt/retropie/configs/all/runcommand-onstart.sh 
-echo 'rom_name="${rom_name##*/}"' >> /opt/retropie/configs/all/runcommand-onstart.sh 
-echo 'rom_name="${rom_name%.*}"' >> /opt/retropie/configs/all/runcommand-onstart.sh 
-echo 'echo "$1 $2 $rom_name" > /tmp/PauseOption.log' >> /opt/retropie/configs/all/runcommand-onstart.sh
+echo 'rom_PauseOption=$3' >> /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'rom_PauseOption="${rom_PauseOption##*/}"' >> /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'rom_PauseOption="${rom_PauseOption%.*}"' >> /opt/retropie/configs/all/runcommand-onstart.sh 
+echo 'echo "$1 $2 $rom_PauseOption" > /tmp/PauseOption.log' >> /opt/retropie/configs/all/runcommand-onstart.sh
 echo '/usr/bin/python /opt/retropie/configs/all/PauseOption/PauseOption.py &' >> /opt/retropie/configs/all/runcommand-onstart.sh
 
 #cd /home/pi/PauseOption/PauseOption/PauseMode
