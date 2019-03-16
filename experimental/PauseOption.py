@@ -21,7 +21,7 @@ capcom_dd = ['ddtod', 'ddsom']
 
 def run_cmd(cmd):
 # runs whatever in the cmd variable
-    p = Popen(cmd, shell=True, stdout=PIPE)
+    p = Popen("LANG=en_US.UTF-8 " + cmd, shell=True, stdout=PIPE)
     output = p.communicate()[0]
     return output
 	
