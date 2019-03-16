@@ -2,6 +2,7 @@
 #!/usr/bin/python
 
 import os, re, time
+from subprocess import *
 import xml.etree.ElementTree as ET
 
 CONFIG = '/opt/retropie/configs/'
@@ -17,6 +18,13 @@ es_conf = 1
 capcom_fight = ['mshvsf', 'vsav', 'sfa', 'sfa2', 'sfa3', 'sf2', 'sf2ce', 'ssf2']
 capcom_dd = ['ddtod', 'ddsom']
 
+
+def run_cmd(cmd):
+# runs whatever in the cmd variable
+    p = Popen(cmd, shell=True, stdout=PIPE)
+    output = p.communicate()[0]
+    return output
+	
 
 def check_update(romname):
     RESUME = PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
@@ -232,17 +240,17 @@ def draw_picture(system, romname, name, lever, buttons):
     # Title
     name = name.replace("'", "")
     cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + "-Bold -pointsize 20 -size 360x50 -gravity Center caption:'" + name + "' /tmp/text.png"
-    os.system(cmd)
+    run_cmd(cmd)
     cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
-    os.system(cmd)
+    run_cmd(cmd)
 
     # Layout
     cmd = "composite -geometry 180x130+22+80 " + PATH_PAUSEOPTION + "img/layout" + str(es_conf) + ".png" + RESUME + RESUME
-    os.system(cmd)
+    run_cmd(cmd)
 
     # Button box
     cmd = "composite -geometry 180x130+212+80 " + PATH_PAUSEOPTION + "img/buttons.png" + RESUME + RESUME
-    os.system(cmd)
+    run_cmd(cmd)
 
     # Buttons
     pos = ["80x20+218+120", "80x20+298+120", "80x20+218+150", "80x20+298+150", "80x20+218+180", "80x20+298+180"]
@@ -253,19 +261,19 @@ def draw_picture(system, romname, name, lever, buttons):
             continue
         btn = digits[i].encode('utf-8') + ' ' + btn
         cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
-        os.system(cmd)
+        run_cmd(cmd)
         cmd = "composite -geometry " + pos[i] + " /tmp/text.png" + RESUME + RESUME
-        os.system(cmd)
+        run_cmd(cmd)
         i = i+1
 
     # Joystick Box
     cmd = "composite -geometry 358x120+23+248 " + PATH_PAUSEOPTION + "img/joystic.png" + RESUME + RESUME
-    os.system(cmd)
+    run_cmd(cmd)
 
     # Lever
     if lever[0] != 'J': # Not 'Just Bottons'
         cmd = "composite -geometry 70x70+36+260 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + RESUME + RESUME
-        os.system(cmd)
+        run_cmd(cmd)
 
     if system == "lr-fbalpha":
         get_btn_layout(system, romname, buttons)
@@ -279,13 +287,13 @@ def draw_picture(system, romname, name, lever, buttons):
             else:
                 btn = u'\u25cf'.encode('utf-8') + ' ' + btn
             cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
-            os.system(cmd)
+            run_cmd(cmd)
             cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
-            os.system(cmd)
+            run_cmd(cmd)
 
     # Generate a STOP image
     cmd = "composite " + PATH_PAUSEOPTION + "img/bg_stop.png " + RESUME + STOP
-    os.system(cmd)
+    run_cmd(cmd)
 
 
 def main():
@@ -311,8 +319,8 @@ def main():
             RESUME = " " + PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
             STOP = " " + PATH_PAUSEOPTION+'result/' + romname + '_stop.png'
             # Copy images to PauseMode 
-            os.system("cp " + RESUME + " " + PATH_PAUSEMODE + "pause_resume.png")
-            os.system("cp " + STOP + " " + PATH_PAUSEMODE + "pause_stop.png")
+            run_cmd("cp " + RESUME + " " + PATH_PAUSEMODE + "pause_resume.png")
+            run_cmd("cp " + STOP + " " + PATH_PAUSEMODE + "pause_stop.png")
 
 
 
