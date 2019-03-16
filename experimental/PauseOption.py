@@ -149,8 +149,8 @@ def get_btn_layout(system, romname, buttons):
     btn_map['a'] = '"8"'
     btn_map['y'] = '"1"'
     btn_map['x'] = '"9"'
-    btn_map['r'] = '"10"'
-    btn_map['l'] = '"11"'
+    btn_map['l'] = '"10"'
+    btn_map['r'] = '"11"'
 
     if os.path.isfile(CONFIG + 'fba/FB Alpha/FB Alpha.rmp') == True:
         print 'Override with emulator setting'
