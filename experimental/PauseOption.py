@@ -163,9 +163,9 @@ def get_btn_layout(system, romname, buttons):
     btn_map['l'] = '"10"'
     btn_map['r'] = '"11"'
 
-    if os.path.isfile(CONFIG + 'fba/FB Alpha/FB Alpha.rmp') == True:
-        print 'Override with emulator setting'
-        f = open(CONFIG + 'fba/FB Alpha/FB Alpha.rmp', 'r')
+    if os.path.isfile(CONFIG + 'fba/FB Alpha/' + romname + '.rmp') == True:
+        print 'Use game specific setting'
+        f = open(CONFIG + 'fba/FB Alpha/' + romname + '.rmp', 'r')
         while True:
             line = f.readline()
             if not line: 
@@ -180,10 +180,10 @@ def get_btn_layout(system, romname, buttons):
             if 'player1' in words[0]:    # input_player1_btn_a = "1"
                 btn_map[words[0][8]] = words[1]  
         f.close()
-
-    if os.path.isfile(CONFIG + 'fba/FB Alpha/' + romname + '.rmp') == True:
-        print 'Override with game specific setting'
-        f = open(CONFIG + 'fba/FB Alpha/' + romname + '.rmp', 'r')
+	
+    elif os.path.isfile(CONFIG + 'fba/FB Alpha/FB Alpha.rmp') == True:
+        print 'Use FBA setting'
+        f = open(CONFIG + 'fba/FB Alpha/FB Alpha.rmp', 'r')
         while True:
             line = f.readline()
             if not line: 
