@@ -1,9 +1,12 @@
 #-*-coding: utf-8 -*-
 #!/usr/bin/python
 
-import os, re, time
+import os, re, time, sys
 from subprocess import *
 import xml.etree.ElementTree as ET
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 CONFIG = '/opt/retropie/configs/'
 PATH_PAUSEOPTION = '/opt/retropie/configs/all/PauseOption/'
@@ -101,7 +104,7 @@ def get_info(romname):
     #game = root.find('./game[@romname=\"' + romname + '\"]')
     #if game == None:
     #   print 'No Game Found'
-        name = game.get('gamename') 
+        name = str(unicode(game.get('gamename')))
         print name
         player = game.find('player')
         controls = player.find('controls')
