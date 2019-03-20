@@ -246,6 +246,9 @@ def draw_picture(system, romname, name, lever, buttons):
     run_cmd(cmd)
     cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
     run_cmd(cmd)
+    # Title for Marquee
+    cmd = "convert -background black -fill white -font " + FONT + "-Bold -pointsize 10 -size 400x225 -gravity North caption:'" + name + "' /tmp/marquee.png"
+    run_cmd(cmd)
 
     # Layout
     cmd = "composite -geometry 180x130+22+80 " + PATH_PAUSEOPTION + "img/layout" + str(es_conf) + ".png" + RESUME + RESUME
