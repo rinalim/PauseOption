@@ -17,7 +17,9 @@ FONT = "'NanumBarunGothic'"
 user_key = {}
 btn_map = {}
 es_conf = 1
-marquee = True
+
+show_pause = True
+show_marquee = True
 
 capcom_fight = ['mshvsf', 'vsav', 'sfa', 'sfa2', 'sfa3', 'sf2', 'sf2ce', 'ssf2']
 capcom_dd = ['ddtod', 'ddsom']
@@ -32,7 +34,6 @@ def run_cmd(cmd):
 
 def check_update(romname):
     RESUME = PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
-    XML+romname+'.xml'
     CORECFG = CONFIG + 'fba/FB Alpha/FB Alpha.rmp'
     GAMECFG = CONFIG + 'fba/FB Alpha/' + romname + '.rmp'
    
@@ -279,9 +280,10 @@ def draw_picture(system, romname, name, lever, buttons):
 
     # Lever
     if lever[0] != 'J': # Not 'Just Bottons'
-        cmd = "composite -geometry 70x70+36+260 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + RESUME + RESUME
-        run_cmd(cmd)
-	if system == "lr-fbalpha" and marquee = True:
+	if show_pause == True:
+            cmd = "composite -geometry 70x70+36+260 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + RESUME + RESUME
+            run_cmd(cmd)
+	if show_marquee == True:
 	    cmd = "composite -geometry 70x70+20+88 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + " /tmp/marquee.png" + " /tmp/marquee.png"
             run_cmd(cmd)
 
@@ -291,17 +293,18 @@ def draw_picture(system, romname, name, lever, buttons):
         # Configured button layout
         pos = ["80x20+124+270", "80x20+207+270", "80x20+290+270", "80x20+124+300", "80x20+207+300", "80x20+290+300"]
         for i in range(1,7):
-            btn = btn_map[user_key[str(i)]]
+	    btn = btn_map[user_key[str(i)]]
             if btn == 'None':
                 btn = u'\u25cf'.encode('utf-8')
             else:
                 btn = u'\u25cf'.encode('utf-8') + ' ' + btn
-            cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
-            run_cmd(cmd)
-            cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
-            run_cmd(cmd)
+            if show_marquee == True:
+                cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
+                run_cmd(cmd)
+                cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
+                run_cmd(cmd)
 	    # For marquee
-	    if marquee = True:
+	    if show_marquee = True:
                 cmd = "convert -background white -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
                 run_cmd(cmd)
                 cmd = "composite -geometry " + pos_marquee[i-1] + " /tmp/text.png" + " /tmp/marquee.png" + " /tmp/marquee.png"
@@ -310,8 +313,9 @@ def draw_picture(system, romname, name, lever, buttons):
                 run_cmd(cmd)
 
     # Generate a STOP image
-    cmd = "composite " + PATH_PAUSEOPTION + "img/bg_stop.png " + RESUME + STOP
-    run_cmd(cmd)
+    if show_marquee == True:
+        cmd = "composite " + PATH_PAUSEOPTION + "img/bg_stop.png " + RESUME + STOP
+        run_cmd(cmd)
 
 
 def main():
