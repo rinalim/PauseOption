@@ -281,6 +281,9 @@ def draw_picture(system, romname, name, lever, buttons):
     if lever[0] != 'J': # Not 'Just Bottons'
         cmd = "composite -geometry 70x70+36+260 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + RESUME + RESUME
         run_cmd(cmd)
+	if system == "lr-fbalpha" and marquee = True:
+	    cmd = "composite -geometry 70x70+20+88 " + PATH_PAUSEOPTION + "img/" + lever[0] + "way.png" + " /tmp/marquee.png" + " /tmp/marquee.png"
+            run_cmd(cmd)
 
     if system == "lr-fbalpha":
         get_btn_layout(system, romname, buttons)
@@ -297,6 +300,14 @@ def draw_picture(system, romname, name, lever, buttons):
             run_cmd(cmd)
             cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
             run_cmd(cmd)
+	    # For marquee
+	    if marquee = True:
+                cmd = "convert -background white -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
+                run_cmd(cmd)
+                cmd = "composite -geometry " + pos_marquee[i-1] + " /tmp/text.png" + " /tmp/marquee.png" + " /tmp/marquee.png"
+                run_cmd(cmd)
+		cmd = "convert /tmp/marquee.png -negate /home/pi/RemoteMarquee/marquee/" + romname + "-ctrl.jpg"
+                run_cmd(cmd)
 
     # Generate a STOP image
     cmd = "composite " + PATH_PAUSEOPTION + "img/bg_stop.png " + RESUME + STOP
