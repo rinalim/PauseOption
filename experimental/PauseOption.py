@@ -249,7 +249,7 @@ def draw_picture(system, romname, name, lever, buttons):
     cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
     run_cmd(cmd)
     # Title for Marquee
-    cmd = "convert -background black -fill white -font " + FONT + "-Bold -pointsize 10 -size 400x225 -gravity North caption:'" + name + "' /tmp/marquee.png"
+    cmd = "convert -background white -fill black -font " + FONT + "-Bold -pointsize 20 -size 400x225 -gravity North caption:'" + name + "' /tmp/marquee.png"
     run_cmd(cmd)
 
     # Layout
@@ -292,19 +292,20 @@ def draw_picture(system, romname, name, lever, buttons):
     
         # Configured button layout
         pos = ["80x20+124+270", "80x20+207+270", "80x20+290+270", "80x20+124+300", "80x20+207+300", "80x20+290+300"]
+        pos_marquee = ["80x20+24+170", "80x20+107+170", "80x20+190+170", "80x20+24+200", "80x20+107+200", "80x20+190+200"]
         for i in range(1,7):
 	    btn = btn_map[user_key[str(i)]]
             if btn == 'None':
                 btn = u'\u25cf'.encode('utf-8')
             else:
                 btn = u'\u25cf'.encode('utf-8') + ' ' + btn
-            if show_marquee == True:
+            if show_pause == True:
                 cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
                 run_cmd(cmd)
                 cmd = "composite -geometry " + pos[i-1] + " /tmp/text.png" + RESUME + RESUME
                 run_cmd(cmd)
 	    # For marquee
-	    if show_marquee = True:
+	    if show_marquee == True:
                 cmd = "convert -background white -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
                 run_cmd(cmd)
                 cmd = "composite -geometry " + pos_marquee[i-1] + " /tmp/text.png" + " /tmp/marquee.png" + " /tmp/marquee.png"
