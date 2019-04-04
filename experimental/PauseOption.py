@@ -242,41 +242,49 @@ def draw_picture(system, romname, name, lever, buttons):
     RESUME = " " + PATH_PAUSEOPTION+'result/' + romname + '_resume.png'
     STOP = " " + PATH_PAUSEOPTION+'result/' + romname + '_stop.png'
 
-    # Title
-    name = name.replace("'", "")
-    cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + "-Bold -pointsize 20 -size 360x50 -gravity Center caption:'" + name + "' /tmp/text.png"
-    run_cmd(cmd)
-    cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
-    run_cmd(cmd)
-    # Title for Marquee
-    cmd = "convert -background white -fill black -font " + FONT + "-Bold -pointsize 20 -size 400x225 -gravity North caption:'" + name + "' /tmp/marquee.png"
-    run_cmd(cmd)
-
-    # Layout
-    cmd = "composite -geometry 180x130+22+80 " + PATH_PAUSEOPTION + "img/layout" + str(es_conf) + ".png" + RESUME + RESUME
-    run_cmd(cmd)
-
-    # Button box
-    cmd = "composite -geometry 180x130+212+80 " + PATH_PAUSEOPTION + "img/buttons.png" + RESUME + RESUME
-    run_cmd(cmd)
-
-    # Buttons
-    pos = ["80x20+218+120", "80x20+298+120", "80x20+218+150", "80x20+298+150", "80x20+218+180", "80x20+298+180"]
-    digits = [u'\u2460', u'\u2461', u'\u2462', u'\u2463', u'\u2464', u'\u2465']
-    i = 0
-    for btn in buttons:
-        if btn == 'None':
-            continue
-        btn = digits[i].encode('utf-8') + ' ' + btn
-        cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
+    if show_pause == True:
+        # Title
+        name = name.replace("'", "")
+        cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + "-Bold -pointsize 20 -size 360x50 -gravity Center caption:'" + name + "' /tmp/text.png"
         run_cmd(cmd)
-        cmd = "composite -geometry " + pos[i] + " /tmp/text.png" + RESUME + RESUME
+        cmd = "composite -geometry 360x50+20+10 /tmp/text.png " + PATH_PAUSEOPTION + "img/bg_resume.png" + RESUME
         run_cmd(cmd)
-        i = i+1
 
-    # Joystick Box
-    cmd = "composite -geometry 358x120+23+248 " + PATH_PAUSEOPTION + "img/joystic.png" + RESUME + RESUME
-    run_cmd(cmd)
+        # Layout
+        cmd = "composite -geometry 180x130+22+80 " + PATH_PAUSEOPTION + "img/layout" + str(es_conf) + ".png" + RESUME + RESUME
+        run_cmd(cmd)
+
+        # Button box
+        cmd = "composite -geometry 180x130+212+80 " + PATH_PAUSEOPTION + "img/buttons.png" + RESUME + RESUME
+        run_cmd(cmd)
+
+        # Buttons
+        pos = ["80x20+218+120", "80x20+298+120", "80x20+218+150", "80x20+298+150", "80x20+218+180", "80x20+298+180"]
+        digits = [u'\u2460', u'\u2461', u'\u2462', u'\u2463', u'\u2464', u'\u2465']
+        i = 0
+        for btn in buttons:
+            if btn == 'None':
+                continue
+            btn = digits[i].encode('utf-8') + ' ' + btn
+            cmd = "convert -background '#E8E8E8' -fill black -font " + FONT + " -pointsize 20 label:'" + btn + "' /tmp/text.png"
+            run_cmd(cmd)
+            cmd = "composite -geometry " + pos[i] + " /tmp/text.png" + RESUME + RESUME
+            run_cmd(cmd)
+            i = i+1
+
+        # Joystick Box
+        cmd = "composite -geometry 358x120+23+248 " + PATH_PAUSEOPTION + "img/joystic.png" + RESUME + RESUME
+        run_cmd(cmd)
+
+    if show_marquee == True:
+        # Title for Marquee
+        #cmd = "convert -background white -fill black -font " + FONT + "-Bold -pointsize 20 -size 400x225 -gravity North caption:'" + name + "' /tmp/marquee.png"
+        cmd = "convert -resize 250x80 -quality 100 '" + "/home/pi/RemoteMarquee/marquee/" + romname + ".png" + "' /tmp/marquee.png"
+        run_cmd(cmd)
+        cmd = "composite -gravity North /tmp/marquee.png " + "/home/pi/RemoteMarquee/background.jpg" + " /tmp/marquee.png"
+        run_cmd(cmd)
+        cmd = "convert /tmp/marquee.png -negate /tmp/marquee.png"
+        run_cmd(cmd)
 
     # Lever
     if lever[0] != 'J': # Not 'Just Bottons'
