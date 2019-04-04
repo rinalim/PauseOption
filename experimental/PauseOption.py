@@ -292,7 +292,7 @@ def draw_picture(system, romname, name, lever, buttons):
     
         # Configured button layout
         pos = ["80x20+124+270", "80x20+207+270", "80x20+290+270", "80x20+124+300", "80x20+207+300", "80x20+290+300"]
-        pos_marquee = ["80x20+24+170", "80x20+107+170", "80x20+190+170", "80x20+24+200", "80x20+107+200", "80x20+190+200"]
+        pos_marquee = ["80x20+124+100", "80x20+207+100", "80x20+290+100", "80x20+124+130", "80x20+207+130", "80x20+290+130"]
         for i in range(1,7):
 	    btn = btn_map[user_key[str(i)]]
             if btn == 'None':
