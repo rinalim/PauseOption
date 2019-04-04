@@ -279,7 +279,7 @@ def draw_picture(system, romname, name, lever, buttons):
     if show_marquee == True:
         # Title for Marquee
         #cmd = "convert -background white -fill black -font " + FONT + "-Bold -pointsize 20 -size 400x225 -gravity North caption:'" + name + "' /tmp/marquee.png"
-        cmd = "convert -resize 250x80 -quality 100 '" + "/home/pi/RemoteMarquee/marquee/" + romname + ".png" + "' /tmp/marquee.png"
+        cmd = "convert -resize 250x70 -quality 100 '" + "/home/pi/RetroPie/roms/arcade/marquee/" + romname + ".png" + "' /tmp/marquee.png"
         run_cmd(cmd)
         cmd = "composite -gravity North /tmp/marquee.png " + "/home/pi/RemoteMarquee/background.jpg" + " /tmp/marquee.png"
         run_cmd(cmd)
